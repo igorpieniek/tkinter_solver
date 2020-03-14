@@ -21,6 +21,9 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Cell.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Solver.py">
       <SubType>Code</SubType>
     </Compile>

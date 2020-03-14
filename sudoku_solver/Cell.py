@@ -13,10 +13,14 @@ class Cell(object):
         return self._column
 
     def delateOpt(self, number):
-        for i in range(len(number)):
-            index =[k for k,e in enumerate(self._options) if e == number[i]]
-            if index:
-                self._options.remove(index)
+        if isinstance(number, list ):
+            for i in range(len(number)):
+                index =[k for k,e in enumerate(self._options) if e == number[i]]
+                if index:
+                    self._options.pop(index)
+        elif isinstance(number, int ):
+            index =[k for k,e in enumerate(self._options) if e == number]
+            if index: self._options.pop(index[-1])
 
     def getNumOfOpt(self):
         return len(self._options)
@@ -36,7 +40,9 @@ class Cell(object):
             return self._value
         else:
             return self._value
-    
+    def getOptions(self):
+        return self._options
+
     def _setBoundariesOfArea(self, rowMin, rowMax, columnMin, columnMax):
             self._areaRowMin = rowMin
             self._areaRowMax = rowMax
