@@ -9,6 +9,8 @@ class Solver(object):
         self._notSolvedArrayInit()
         self._firstMethod()
 
+        return self._array
+
     def _copyArray(self,array):
         if len(array) != 9:
             error('Macierz ma za mało rzędów!')
