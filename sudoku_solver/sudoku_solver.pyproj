@@ -24,6 +24,9 @@
     <Compile Include="Cell.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="CellTkinter.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Solver.py">
       <SubType>Code</SubType>
     </Compile>
