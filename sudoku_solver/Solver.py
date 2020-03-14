@@ -22,8 +22,16 @@ class Solver(object):
             for c in range(len(self._array[r])):
                 if not self._array[r][c]:
                     self._notSolvedIndex.append([r,c])
-                    print(self._notSolvedIndex[-1])
 
     def _firstMethod(self):
-        pass
+        while True:
+            #main loop to check rows
+            status = True
+            for pointToSolve in range(len( self._notSolvedIndex)):
+                # row checking
+                used =[]
+                for col in range(len(self._array[pointToSolve[0]])):
+                    if self._array[pointToSolve[0]][col] :
+                        used.append(col)
+                    
 
