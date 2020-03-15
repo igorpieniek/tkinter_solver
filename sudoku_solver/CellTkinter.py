@@ -8,14 +8,15 @@ class CellTkinter(object):
         self._addEntry()
 
     def _addEntry(self):
-        self._value = ( Entry(self._root, width=4 ,textvariable = IntVar()) )
+        self._value = ( Entry(self._root, width=4 ,textvariable = StringVar()) )
         self._value.grid( row= self._row , column=self._column ,padx = 3, pady=3, sticky = N+W+E)
     
     def getValue(self):
-        return self._value.get()
+        if not self._value.get(): return 0
+        return int(self._value.get())
 
     def setValue(self, val): 
-        if not self.getValue() : self._value.config(background = "red")
+        if self.getValue() == 0 : self._value.config(fg = 'red')
         self._value.delete(0,END)
         self._value.insert(0,str(val))
         
