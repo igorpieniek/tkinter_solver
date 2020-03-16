@@ -16,7 +16,8 @@ class CellTkinter(object):
         return int(self._value.get())
 
     def setValue(self, val): 
-        if self.getValue() == 0 : self._value.config(fg = 'red')
-        self._value.delete(0,END)
-        self._value.insert(0,str(val))
+        if self.getValue() == 0 and   val != 0: 
+            self._value.config(fg = 'green')
+            self._value.delete(0,END)
+            self._value.insert(0,str(val))
         

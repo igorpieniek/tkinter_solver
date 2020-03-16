@@ -8,6 +8,7 @@ class Solver(object):
         self._copyArray(array)
         self._notSolvedArrayInit()
         self._firstMethod()
+        if self._cells: self._secondMethod()
 
         return self._array
 
@@ -52,7 +53,7 @@ class Solver(object):
                 if cellNum.getNumOfOpt() == 1:
                     print( 'P(' + str(cellNum.getRow()) 
                             +', '+ str(cellNum.getColumn())
-                            + ' Val: '+ str(cellNum.getValue()) )
+                            + ') Val: '+ str(cellNum.getValue()) )
                     self._array[cellNum.getRow()][cellNum.getColumn()] = cellNum.getValue()
                     indexToDel.append(index)
                     break
@@ -65,6 +66,63 @@ class Solver(object):
             if indexToDel: self._cells.pop(indexToDel[-1])
             if not self._cells: status = False
         self._printArray()
+
+
+    def _secondMethod(self):
+        status = True      
+        while status:
+            indexToDel = []
+            for index,cellNum in  enumerate(self._cells):
+                #same row cells
+                sameRow = []
+                for c in self._cells:
+                    if c.getRow() == cellNum.getRow() and c !=cellNum: sameRow.append(c)
+                #same columns cells
+                sameColumn = []
+                for c in self._cells:
+                    if c.getColumn() == cellNum.getColumn()and c !=cellNum: sameColumn.append(c)
+                #same 3x3 Area cells
+                sameArea = []
+                for c in self._cells:
+                    if (c.getAreaRowMin() == cellNum.getAreaRowMin() and
+                       c.getAreaRowMax() == cellNum.getAreaRowMax() and
+                       c.getAreaColumnMin() == cellNum.getAreaColumnMin() and
+                       c.getAreaColumnMax() == cellNum.getAreaColumnMax() and 
+                       c !=cellNum):
+                            sameArea.append(c)
+
+                
+                # get in Row update 
+                for row in sameRow:
+                    for val in row.getOptions():
+                        cellNum.delateOpt(val)
+                # get in Column update 
+                for col in sameColumn:
+                    for val in col.getOptions():
+                        cellNum.delateOpt(val)
+                # get in Area update 
+                for area in sameArea:
+                    for val in area.getOptions():
+                        cellNum.delateOpt(val)
+
+                # check if only one oppurtunity
+                if cellNum.getNumOfOpt() == 1:
+                    print( 'P(' + str(cellNum.getRow()) 
+                            +', '+ str(cellNum.getColumn())
+                            + ') Val: '+ str(cellNum.getValue()) )
+                    self._array[cellNum.getRow()][cellNum.getColumn()] = cellNum.getValue()
+                    indexToDel.append(index)
+                    break
+                elif (index+1) == len(self._cells):
+
+                    print('METHOD 2 : END OF IDEAS')
+                    self._printOptions()
+                    status = False
+                
+            if indexToDel: self._cells.pop(indexToDel[-1])
+            if not self._cells: status = False
+
+
     def _printOptions(self):
         for i in self._cells:
             print( 'P(' + str(i.getRow()) 
