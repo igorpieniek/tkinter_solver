@@ -1,4 +1,5 @@
 from Cell import *
+import copy
 
 class Solver(object):
     def __init__(self):
@@ -7,8 +8,10 @@ class Solver(object):
     def solve(self,array):
         self._copyArray(array)
         self._notSolvedArrayInit()
-        self._firstMethod()
-        if self._cells: self._secondMethod()
+        while True:
+            self._firstMethod()
+            if self._cells: self._secondMethod()
+            else : break
 
         return self._array
 
@@ -60,12 +63,12 @@ class Solver(object):
                 elif (index+1) == len(self._cells):
 
                     print('Last cell without solving')
-                    self._printOptions()
+                    if False :self._printOptions()
                     status = False
                 
             if indexToDel: self._cells.pop(indexToDel[-1])
             if not self._cells: status = False
-        self._printArray()
+
 
 
     def _secondMethod(self):
@@ -73,6 +76,8 @@ class Solver(object):
         while status:
             indexToDel = []
             for index,cellNum in  enumerate(self._cells):
+                #copy options
+                opt = copy.deepcopy(cellNum)
                 #same row cells
                 sameRow = []
                 for c in self._cells:
@@ -95,32 +100,35 @@ class Solver(object):
                 # get in Row update 
                 for row in sameRow:
                     for val in row.getOptions():
-                        cellNum.delateOpt(val)
+                        opt.delateOpt(val)
                 # get in Column update 
                 for col in sameColumn:
                     for val in col.getOptions():
-                        cellNum.delateOpt(val)
+                        opt.delateOpt(val)
                 # get in Area update 
                 for area in sameArea:
                     for val in area.getOptions():
-                        cellNum.delateOpt(val)
+                        opt.delateOpt(val)
 
                 # check if only one oppurtunity
-                if cellNum.getNumOfOpt() == 1:
-                    print( 'P(' + str(cellNum.getRow()) 
-                            +', '+ str(cellNum.getColumn())
-                            + ') Val: '+ str(cellNum.getValue()) )
-                    self._array[cellNum.getRow()][cellNum.getColumn()] = cellNum.getValue()
+                if opt.getNumOfOpt() == 1:
+                    print( 'P(' + str(opt.getRow()) 
+                            +', '+ str(opt.getColumn())
+                            + ') Val: '+ str(opt.getValue()) )
+                    self._array[cellNum.getRow()][cellNum.getColumn()] = opt.getValue()
                     indexToDel.append(index)
                     break
                 elif (index+1) == len(self._cells):
 
                     print('METHOD 2 : END OF IDEAS')
-                    self._printOptions()
+                    if False : self._printOptions()
                     status = False
-                
-            if indexToDel: self._cells.pop(indexToDel[-1])
-            if not self._cells: status = False
+                del opt
+
+            if indexToDel:
+               self._cells.pop(indexToDel[-1])
+               break
+            if not self._cells: break
 
 
     def _printOptions(self):
