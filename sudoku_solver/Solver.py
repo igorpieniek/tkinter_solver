@@ -1,5 +1,6 @@
 from Cell import *
 import copy
+from oneCandidate import *
 
 class Solver(object):
     def __init__(self):
@@ -8,6 +9,7 @@ class Solver(object):
     def solve(self,array):
         self._copyArray(array)
         self._notSolvedArrayInit()
+        self.__oneCandidate = OneCandidate(array)
         status = True
         while status:
             self._firstMethod()
@@ -33,42 +35,44 @@ class Solver(object):
                     self._cells.append(Cell(r,c))
 
     def _firstMethod(self):
-        status = True      
-        while status:
-            indexToDel = []
-            for index,cellNum in  enumerate(self._cells):
-                # get in Row update 
-                for colNum in range( len( self._array[cellNum.getColumn()] ) ):
-                    if self._array[cellNum.getRow()][colNum]:
-                        cellNum.delateOpt(self._array[cellNum.getRow()][colNum])
 
-                # get in Column update 
-                for rowNum in range( len( self._array[cellNum.getRow()] ) ):
-                    if self._array[rowNum][cellNum.getColumn()]:
-                        cellNum.delateOpt(self._array[rowNum][cellNum.getColumn()])
+        self.__oneCandidate.process(self._cells, self._array)
+        #status = True      
+        #while status:
+        #    indexToDel = []
+        #    for index,cellNum in  enumerate(self._cells):
+        #        # get in Row update 
+        #        for colNum in range( len( self._array[cellNum.getColumn()] ) ):
+        #            if self._array[cellNum.getRow()][colNum]:
+        #                cellNum.delateOpt(self._array[cellNum.getRow()][colNum])
+
+        #        # get in Column update 
+        #        for rowNum in range( len( self._array[cellNum.getRow()] ) ):
+        #            if self._array[rowNum][cellNum.getColumn()]:
+        #                cellNum.delateOpt(self._array[rowNum][cellNum.getColumn()])
                     
-                # get in 3x3 Area update        
-                for rowNum in range(cellNum.getAreaRowMin(), cellNum.getAreaRowMax() ):
-                    for colNum in  range(cellNum.getAreaColumnMin(), cellNum.getAreaColumnMax() ):
-                        if self._array[rowNum][colNum]:
-                            cellNum.delateOpt(self._array[rowNum][colNum])
+        #        # get in 3x3 Area update        
+        #        for rowNum in range(cellNum.getAreaRowMin(), cellNum.getAreaRowMax() ):
+        #            for colNum in  range(cellNum.getAreaColumnMin(), cellNum.getAreaColumnMax() ):
+        #                if self._array[rowNum][colNum]:
+        #                    cellNum.delateOpt(self._array[rowNum][colNum])
 
-                # check if only one oppurtunity
-                if cellNum.getNumOfOpt() == 1:
-                    print( 'P(' + str(cellNum.getRow()) 
-                            +', '+ str(cellNum.getColumn())
-                            + ') Val: '+ str(cellNum.getValue()) + ' F')
-                    self._array[cellNum.getRow()][cellNum.getColumn()] = cellNum.getValue()
-                    indexToDel.append(index)
-                    break
-                elif (index+1) == len(self._cells):
+        #        # check if only one oppurtunity
+        #        if cellNum.getNumOfOpt() == 1:
+        #            print( 'P(' + str(cellNum.getRow()) 
+        #                    +', '+ str(cellNum.getColumn())
+        #                    + ') Val: '+ str(cellNum.getValue()) + ' F')
+        #            self._array[cellNum.getRow()][cellNum.getColumn()] = cellNum.getValue()
+        #            indexToDel.append(index)
+        #            break
+        #        elif (index+1) == len(self._cells):
 
-                    print('Last cell without solving')
-                    if False :self._printOptions()
-                    status = False
+        #            print('Last cell without solving')
+        #            if False :self._printOptions()
+        #            status = False
                 
-            if indexToDel: self._cells.pop(indexToDel[-1])
-            if not self._cells: status = False
+        #    if indexToDel: self._cells.pop(indexToDel[-1])
+        #    if not self._cells: status = False
 
 
 
@@ -78,7 +82,6 @@ class Solver(object):
             indexToDel = []
             for index,cellNum in  enumerate(self._cells):
                 #copy options
-
 
                 #same row cells
                 sameRow = []
