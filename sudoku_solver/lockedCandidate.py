@@ -1,5 +1,6 @@
 from TechniquesTools import *
 import copy
+from Cell import *
 
 class LockedCandidate(TechniquesTools):
     """description of class"""
@@ -11,6 +12,19 @@ class LockedCandidate(TechniquesTools):
         self.cells = cells
         for index, oneCell in  enumerate(self.cells):
             pass
+    
+    def __updateRow(self, oneCell): return self.__update(oneCell, 'row')
+
+    def __updateColumn(self, oneCell): return self.__update(oneCell, 'column')
+
+    def __update3x3Area(self,oneCell): return self.__update(oneCell, '3x3')
+
+    def __update(self, oneCell, rc):
+        methods = {'row': Cell.getRow, 'column': Cell.getColumn, 'Area': Cell.getAreaNum}
+        if rc in methods.keys():
+            line = [cell for cell in self.cells if methods[rc](cell) == methods[rc](oneCell) and cell != oneCell]
+        else: raise Exception('no such dimension')
+        return self.__checkLine(line,oneCell)
 
     def __checkLine(self, line, oneCell):      
         tempCells = copy.deepcopy(oneCell)
@@ -19,18 +33,3 @@ class LockedCandidate(TechniquesTools):
                 tempCells.delateOpt(val)
         if tempCells.getNumOfOpt() == 1: return tempCells.getValue()
         else: return None
-    
-    def __updateRow(self, oneCell): return self.__update(oneCell, 'row')
-
-    def __updateColumn(self, oneCell): return self.__update(oneCell, 'column')
-
-
-    def __update(self, oneCell, rc):
-        if rc == 'row':
-            row = oneCell.getRow()
-            line = [cell for cell in self.cells if cell.getRow() == row and cell != oneCell]
-        elif rc == 'column':
-            column = oneCell.getColumn()
-            line = [cell for cell in self.cells if cell.getColumn() == column and cell != oneCell]
-        else: raise Exception('no such dimension')
-        out = self.__checkLine(line,oneCell)
