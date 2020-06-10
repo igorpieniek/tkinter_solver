@@ -10,14 +10,26 @@ class LockedCandidate(TechniquesTools):
     def process(self, cells, array ):
         self.array = array
         self.cells = cells
-        for index, oneCell in  enumerate(self.cells):
-            pass
+        status = True
+        while status:
+            for index, oneCell in  enumerate(self.cells):
+                out = self.__updateRow(oneCell)
+                if not out : out = self.__updateColumn(oneCell)
+                if not out : out = self.__update3x3Area(oneCell)
+                status, indexToDel = self.updateOneOption(oneCell,len(cells), index)
+                if indexToDel:
+                        self.printSolvedCell(self.cells[indexToDel])
+                        self.cells.pop(indexToDel)
+                        break
+            if not self.cells: status= False
+        print(self.__class__.__name__, ' method stop working')
+        return self.array
     
     def __updateRow(self, oneCell): return self.__update(oneCell, 'row')
 
     def __updateColumn(self, oneCell): return self.__update(oneCell, 'column')
 
-    def __update3x3Area(self,oneCell): return self.__update(oneCell, '3x3')
+    def __update3x3Area(self,oneCell): return self.__update(oneCell, 'Area')
 
     def __update(self, oneCell, rc):
         methods = {'row': Cell.getRow, 'column': Cell.getColumn, 'Area': Cell.getAreaNum}

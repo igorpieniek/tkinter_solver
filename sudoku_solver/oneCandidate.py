@@ -14,26 +14,15 @@ class OneCandidate(TechniquesTools):
                 self.__updateRow(oneCell)
                 self.__updateColumn(oneCell)
                 self.__update3x3Area(oneCell)
-                status, indexToDel = self.__updateOneOption(oneCell,len(cells), index)
+                status, indexToDel = self.updateOneOption(oneCell,len(cells), index)
                 if indexToDel:
-                    TechniquesTools.printSolvedCell(self,cells[indexToDel])
+                    self.printSolvedCell(cells[indexToDel])
                     cells.pop(indexToDel)
                     break
             if not cells: status= False
-        print('OneCandidate method stop working')
+        print(self.__class__.__name__,' method stop working')
         return self.array
-
-
-    def __updateOneOption(self, oneCell, lenCells, index):
-        status = True
-        indexToDel = None
-        if oneCell.getNumOfOpt()==1:
-            self.array[oneCell.getRow()][oneCell.getColumn()] = oneCell.getValue()
-            indexToDel = index
-        elif (index+1) == lenCells:
-            print('Last cell without solving')
-            status = False
-        return status, indexToDel
+    
 
     def __update(self, oneCell, rc):
         if rc == 'row':
