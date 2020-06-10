@@ -36,7 +36,7 @@ class Solver(object):
 
     def _firstMethod(self):
 
-        self.__oneCandidate.process(self._cells, self._array)
+        self._array = self.__oneCandidate.process(self._cells, self._array)
         #status = True      
         #while status:
         #    indexToDel = []
@@ -156,4 +156,9 @@ class Solver(object):
     def _printArray(self):
         print('Wynik :')
         for row in range(len(self._array[0])):
-            print(self._array[row])             
+            print(self._array[row])  
+    def __str__(self):
+        out = ''
+        for row in self._array:
+            out += str(row)+ '\n'
+        return out

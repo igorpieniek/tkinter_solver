@@ -8,7 +8,18 @@ solv = Solver()
 array = []
 
 def solve(array):
-    return solv.solve(array)
+    array = [[1,0,0,0,8,4,0,0,0],
+         [0,0,0,1,0,0,6,0,0],
+         [0,0,0,0,9,0,0,0,0],
+         [4,0,0,7,0,0,0,8,0],
+         [3,0,0,4,0,0,0,6,0],
+         [5,0,1,0,2,8,0,7,3],
+         [0,0,0,6,0,0,0,0,5],
+         [0,0,7,0,0,1,0,0,0],
+         [0,0,0,5,4,0,0,0,8]]
+    out = solv.solve(array)
+    print(solv)
+    return out
 
 def sendArray(array):
     #build multi dimension array

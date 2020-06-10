@@ -19,6 +19,7 @@ class OneCandidate():
                     break
             if not cells: status= False
         print('OneCandidate method stop working')
+        return self.array
 
 
     def __updateOneOption(self, oneCell, lenCells, index):
