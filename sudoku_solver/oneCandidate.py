@@ -1,6 +1,7 @@
 from Cell import *
+from TechniquesTools import *
 
-class OneCandidate():
+class OneCandidate(TechniquesTools):
     """Method of solving sudoku called one candidate method"""
     def __init__(self, array):
         self.array = array
@@ -14,7 +15,8 @@ class OneCandidate():
                 self.__updateColumn(oneCell)
                 self.__update3x3Area(oneCell)
                 status, indexToDel = self.__updateOneOption(oneCell,len(cells), index)
-                if indexToDel: 
+                if indexToDel:
+                    TechniquesTools.printSolvedCell(self,cells[indexToDel])
                     cells.pop(indexToDel)
                     break
             if not cells: status= False
@@ -61,3 +63,4 @@ class OneCandidate():
                 if self.array[row][col]:
                     oneCell.delateOpt( self.array[row][col] )
         return oneCell
+    

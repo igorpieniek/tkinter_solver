@@ -27,6 +27,9 @@
     <Compile Include="CellTkinter.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="TechniquesTools.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="oneCandidate.py">
       <SubType>Code</SubType>
     </Compile>
