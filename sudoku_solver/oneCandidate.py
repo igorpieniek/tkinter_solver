@@ -16,13 +16,8 @@ class OneCandidate(TechniquesTools):
                 self.__updateColumn(oneCell)
                 self.__update3x3Area(oneCell)
                 status, indexToDel = self.updateOneOption(oneCell,len(cells), index)
-                if indexToDel:
-                    self.foundStatus = True
-                    self.printSolvedCell(cells[indexToDel])
-                    cells.pop(indexToDel)
-                    break
+                if self.resultOperations(indexToDel, oneCell, cells): break  
             if not cells: status= False
-        print(self.__class__.__name__,' method stop working')
         return self.array, self.foundStatus
     
 
