@@ -15,13 +15,12 @@ class Cell(object):
 
     def delateOpt(self, number):
         if isinstance(number, list ):
-            for i in range(len(number)):
-                index =[k for k,e in enumerate(self._options) if e == number[i]]
-                if index:
-                    self._options.pop(index)
+            for i in number:
+                try: self._options.remove(i)
+                except: continue                
         elif isinstance(number, int ):
-            index =[k for k,e in enumerate(self._options) if e == number]
-            if index: self._options.pop(index[-1])
+            try: self._options.remove(number)
+            except: return
 
     def getNumOfOpt(self):return len(self._options)
     def getAreaRowMin(self): return self._areaRowMin
