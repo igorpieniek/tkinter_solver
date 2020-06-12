@@ -3,7 +3,7 @@ import copy
 from Cell import *
 
 class LockedCandidate(TechniquesTools):
-    """description of class"""
+    """Method of solving sudoku called locked candidate method"""
     def __init__(self, array):
         self.array = array
 
@@ -19,11 +19,7 @@ class LockedCandidate(TechniquesTools):
             status, indexToDel = self.updateOneOption(oneCell,len(cells), index)
             if not status: return self.array, False
             if indexToDel: break
-        if indexToDel: 
-            self.foundStatus = True
-            self.printSolvedCell(oneCell)
-            cells.pop(indexToDel)    
-        #print(self.__class__.__name__, ' method stop working')
+        self.resultOperations(indexToDel, oneCell, cells)  
         return self.array, self.foundStatus
            
 

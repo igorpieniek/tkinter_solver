@@ -15,3 +15,12 @@ class TechniquesTools():
             #print(self.__class__.__name__,': Last cell without solving')
             status = False
         return status, indexToDel
+
+    def resultOperations(self,indexToDel, oneCell,cells):
+        if indexToDel: 
+            self.foundStatus = True
+            self.printSolvedCell(oneCell)
+            cells.pop(indexToDel)
+            #print(self.__class__.__name__, ' method stop working')
+            return True
+        return False
