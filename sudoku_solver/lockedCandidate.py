@@ -14,9 +14,9 @@ class LockedCandidate(TechniquesTools):
         status = True
         while status:
             for index, oneCell in  enumerate(self.cells):
-                out, oneCell = self.__updateRow(oneCell)
-                if not out : out,oneCell = self.__updateColumn(oneCell)
-                if not out : out,oneCell = self.__update3x3Area(oneCell)
+                self.__updateRow(oneCell)
+                if not oneCell.getValue() : self.__updateColumn(oneCell)
+                if not oneCell.getValue() : self.__update3x3Area(oneCell)
                 status, indexToDel = self.updateOneOption(oneCell,len(self.cells), index)
                 if indexToDel:
                         self.foundStatus = True
@@ -36,24 +36,9 @@ class LockedCandidate(TechniquesTools):
     def __update(self, oneCell, rc):
         methods = {'row': Cell.getRow, 'column': Cell.getColumn, 'Area': Cell.getAreaNum}
         if rc in methods.keys():
-            line = [cell for cell in self.cells if methods[rc](cell) == methods[rc](oneCell) and cell != oneCell]
+            line = [cell for cell in self.cells if methods[rc](cell) == methods[rc](oneCell) and cell != oneCell]            
         else: raise Exception('no such dimension')
         return self.__checkLine(line,oneCell)
-
-    def __checkLineTemp(self, line, oneCell):      
-        tempCell = copy.deepcopy(oneCell)
-        currentNumOfOptions = oneCell.getNumOfOpt()
-        options = oneCell.getOptions()
-        deletedOptions = []
-        for el in line:
-            for val in el.getOptions():
-                tempCell.delateOpt(val)
-                deletedOptions.append(val)
-        deletedOptions = list(set(deletedOptions))
-        if tempCell.getNumOfOpt() == 1: 
-            oneCell = tempCell
-            return oneCell.getValue(), oneCell
-        else: return None, oneCell
 
 
     def __checkLine(self, line, oneCell):
@@ -68,5 +53,4 @@ class LockedCandidate(TechniquesTools):
                 except: continue              
         if len(options) == 1: 
             oneCell.delateOpt(toDeleteOptions)
-            return oneCell.getValue(), oneCell
-        else: return None, oneCell
+        return oneCell
