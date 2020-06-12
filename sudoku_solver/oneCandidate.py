@@ -7,6 +7,7 @@ class OneCandidate(TechniquesTools):
         self.array = array
 
     def process(self, cells, array ):
+        self.foundStatus = False
         self.array = array #update in case any number was added in other method
         status = True
         while status:
@@ -16,12 +17,13 @@ class OneCandidate(TechniquesTools):
                 self.__update3x3Area(oneCell)
                 status, indexToDel = self.updateOneOption(oneCell,len(cells), index)
                 if indexToDel:
+                    self.foundStatus = True
                     self.printSolvedCell(cells[indexToDel])
                     cells.pop(indexToDel)
                     break
             if not cells: status= False
         print(self.__class__.__name__,' method stop working')
-        return self.array
+        return self.array, self.foundStatus
     
 
     def __update(self, oneCell, rc):

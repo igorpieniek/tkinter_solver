@@ -6,6 +6,9 @@ class Cell(object):
         self._value =0
         self._calculateArea()
 
+    def __eq__(self, value):
+        return value._row == self._row and value._column == self._column
+
     def getRow(self): return self._row
 
     def getColumn(self): return self._column

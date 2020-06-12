@@ -8,22 +8,24 @@ class LockedCandidate(TechniquesTools):
         self.array = array
 
     def process(self, cells, array ):
+        self.foundStatus = False
         self.array = array
         self.cells = cells
         status = True
         while status:
             for index, oneCell in  enumerate(self.cells):
-                out = self.__updateRow(oneCell)
-                if not out : out = self.__updateColumn(oneCell)
-                if not out : out = self.__update3x3Area(oneCell)
-                status, indexToDel = self.updateOneOption(oneCell,len(cells), index)
+                out, oneCell = self.__updateRow(oneCell)
+                if not out : out,oneCell = self.__updateColumn(oneCell)
+                if not out : out,oneCell = self.__update3x3Area(oneCell)
+                status, indexToDel = self.updateOneOption(oneCell,len(self.cells), index)
                 if indexToDel:
-                        self.printSolvedCell(self.cells[indexToDel])
+                        self.foundStatus = True
+                        self.printSolvedCell(oneCell)
                         self.cells.pop(indexToDel)
                         break
             if not self.cells: status= False
         print(self.__class__.__name__, ' method stop working')
-        return self.array
+        return self.array, self.foundStatus
     
     def __updateRow(self, oneCell): return self.__update(oneCell, 'row')
 
@@ -38,10 +40,33 @@ class LockedCandidate(TechniquesTools):
         else: raise Exception('no such dimension')
         return self.__checkLine(line,oneCell)
 
-    def __checkLine(self, line, oneCell):      
-        tempCells = copy.deepcopy(oneCell)
+    def __checkLineTemp(self, line, oneCell):      
+        tempCell = copy.deepcopy(oneCell)
+        currentNumOfOptions = oneCell.getNumOfOpt()
+        options = oneCell.getOptions()
+        deletedOptions = []
         for el in line:
             for val in el.getOptions():
-                tempCells.delateOpt(val)
-        if tempCells.getNumOfOpt() == 1: return tempCells.getValue()
-        else: return None
+                tempCell.delateOpt(val)
+                deletedOptions.append(val)
+        deletedOptions = list(set(deletedOptions))
+        if tempCell.getNumOfOpt() == 1: 
+            oneCell = tempCell
+            return oneCell.getValue(), oneCell
+        else: return None, oneCell
+
+
+    def __checkLine(self, line, oneCell):
+        deletedOptions = []
+        options = oneCell.getOptions()
+        toDeleteOptions = []
+        for el in line:
+            for val in el.getOptions():
+                try: 
+                    options.remove(val)
+                    toDeleteOptions.append(val)
+                except: continue              
+        if len(options) == 1: 
+            oneCell.delateOpt(toDeleteOptions)
+            return oneCell.getValue(), oneCell
+        else: return None, oneCell
