@@ -12,6 +12,6 @@ class TechniquesTools():
             self.array[oneCell.getRow()][oneCell.getColumn()] = oneCell.getValue()
             indexToDel = index
         elif (index+1) == lenCells:
-            print(self.__class__.__name__,': Last cell without solving')
+            #print(self.__class__.__name__,': Last cell without solving')
             status = False
         return status, indexToDel

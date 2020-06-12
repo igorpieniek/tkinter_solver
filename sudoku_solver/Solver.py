@@ -16,8 +16,8 @@ class Solver(object):
         while status:
             self._array, foundStatus1 = self.__oneCandidate.process(self._cells, self._array)
             if self._cells: 
-                foundStatus2= self._secondMethod()
-                #self._array,foundStatus2 = self.__lockedCandidate.process(self._cells, self._array)
+                #foundStatus2= self._secondMethod()
+                self._array,foundStatus2 = self.__lockedCandidate.process(self._cells, self._array)
                 
             else : break
         
@@ -51,6 +51,9 @@ class Solver(object):
             for index,cellNum in  enumerate(self._cells):
                 #copy options
 
+                print(cellNum.getRow(), cellNum.getColumn())
+                options = cellNum.getOptions()              
+                
                 #same row cells
                 sameRow = []
                 for c in self._cells:
@@ -62,44 +65,47 @@ class Solver(object):
                 #same 3x3 Area cells
                 sameArea = []
                 for c in self._cells:
-                    if (c.getAreaRowMin() == cellNum.getAreaRowMin() and
-                       c.getAreaRowMax() == cellNum.getAreaRowMax() and
-                       c.getAreaColumnMin() == cellNum.getAreaColumnMin() and
-                       c.getAreaColumnMax() == cellNum.getAreaColumnMax() and 
+                    if (c.getAreaNum() == cellNum.getAreaNum() and 
                        c !=cellNum):
                             sameArea.append(c)
-
+                toDel = []
                 fullstatus = True
                 opt = copy.deepcopy(cellNum)
                 # get in Row update 
                 for row in sameRow:
                     for val in row.getOptions():
                         opt.delateOpt(val)
+                        toDel.append(val)
                 if opt.getNumOfOpt() == 1: fullstatus = False
 
                 # get in Column update
                 if fullstatus:
                     del opt
+                    toDel = []
                     opt = copy.deepcopy(cellNum)
                     for col in sameColumn:
                         for val in col.getOptions():
                             opt.delateOpt(val)
+                            toDel.append(val)
                     if opt.getNumOfOpt() == 1: fullstatus = False
                 # get in Area update
                 if fullstatus:
                     del opt
+                    toDel = []
                     opt = copy.deepcopy(cellNum)
                     for area in sameArea:
                         for val in area.getOptions():
                             opt.delateOpt(val)
-
+                            toDel.append(val)
+                
+                print('options ', options, ' toDel ', list(set(toDel)))
                 # check if only one oppurtunity
                 if opt.getNumOfOpt() == 1:
                     print( 'P(' + str(opt.getRow()) 
                             +', '+ str(opt.getColumn())
                             + ') Val: '+ str(opt.getValue()) + ' Second' )
                     self._array[cellNum.getRow()][cellNum.getColumn()] = opt.getValue()
-                    indexToDel.append(index)
+                    indexToDel = index
                     break
                 elif (index+1) == len(self._cells):
 
@@ -110,7 +116,7 @@ class Solver(object):
 
 
             if indexToDel:
-               self._cells.pop(indexToDel[-1])
+               self._cells.pop(indexToDel)
                return True
             else: return False
             #if not self._cells: return False

@@ -10,40 +10,39 @@ class LockedCandidate(TechniquesTools):
     def process(self, cells, array ):
         self.foundStatus = False
         self.array = array
-        self.cells = cells
-        status = True
-        while status:
-            for index, oneCell in  enumerate(self.cells):
-                self.__updateRow(oneCell)
-                if not oneCell.getValue() : self.__updateColumn(oneCell)
-                if not oneCell.getValue() : self.__update3x3Area(oneCell)
-                status, indexToDel = self.updateOneOption(oneCell,len(self.cells), index)
-                if indexToDel:
-                        self.foundStatus = True
-                        self.printSolvedCell(oneCell)
-                        self.cells.pop(indexToDel)
-                        break
-            if not self.cells: status= False
-        print(self.__class__.__name__, ' method stop working')
+        self.cells = copy.deepcopy(cells)
+        
+        for index, oneCell in  enumerate(cells):          
+            self.__updateRow(oneCell)
+            if not oneCell.getValue() : self.__updateColumn(oneCell)
+            if not oneCell.getValue() : self.__update3x3Area(oneCell)
+            status, indexToDel = self.updateOneOption(oneCell,len(cells), index)
+            if not status: return self.array, False
+            if indexToDel: break
+        if indexToDel: 
+            self.foundStatus = True
+            self.printSolvedCell(oneCell)
+            cells.pop(indexToDel)    
+        #print(self.__class__.__name__, ' method stop working')
         return self.array, self.foundStatus
-    
-    def __updateRow(self, oneCell): return self.__update(oneCell, 'row')
+           
 
-    def __updateColumn(self, oneCell): return self.__update(oneCell, 'column')
+    def __updateRow(self, oneCell): self.__update(oneCell, 'row')
 
-    def __update3x3Area(self,oneCell): return self.__update(oneCell, 'Area')
+    def __updateColumn(self, oneCell): self.__update(oneCell, 'column')
+
+    def __update3x3Area(self,oneCell): self.__update(oneCell, 'Area')
 
     def __update(self, oneCell, rc):
         methods = {'row': Cell.getRow, 'column': Cell.getColumn, 'Area': Cell.getAreaNum}
         if rc in methods.keys():
-            line = [cell for cell in self.cells if methods[rc](cell) == methods[rc](oneCell) and cell != oneCell]            
+            line = [cell for cell in self.cells if methods[rc](cell) == methods[rc](oneCell) and not cell == oneCell]            
         else: raise Exception('no such dimension')
-        return self.__checkLine(line,oneCell)
-
+        self.__checkLine(line,oneCell)
 
     def __checkLine(self, line, oneCell):
         deletedOptions = []
-        options = oneCell.getOptions()
+        options = copy.copy(oneCell.getOptions())
         toDeleteOptions = []
         for el in line:
             for val in el.getOptions():
@@ -53,4 +52,3 @@ class LockedCandidate(TechniquesTools):
                 except: continue              
         if len(options) == 1: 
             oneCell.delateOpt(toDeleteOptions)
-        return oneCell
