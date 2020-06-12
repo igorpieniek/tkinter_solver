@@ -16,12 +16,12 @@ class Solver(object):
         while status:
             self._array, foundStatus1 = self.__oneCandidate.process(self._cells, self._array)
             if self._cells: 
-                #status= self._secondMethod()
-                self._array,foundStatu2 = self.__lockedCandidate.process(self._cells, self._array)
+                foundStatus2= self._secondMethod()
+                #self._array,foundStatus2 = self.__lockedCandidate.process(self._cells, self._array)
                 
             else : break
         
-            if not (foundStatus1 or foundStatu2): break
+            if not (foundStatus1 or foundStatus2): break
 
 
         return self._array
@@ -112,7 +112,8 @@ class Solver(object):
             if indexToDel:
                self._cells.pop(indexToDel[-1])
                return True
-            if not self._cells: return False
+            else: return False
+            #if not self._cells: return False
 
 
     def _printOptions(self):
