@@ -36,13 +36,11 @@ def sendArray(array):
         for r in range(len(array[0])):
             array[c][r].setValue(solved[r][c])
 
-def clear():
-    array = []
-    for c in range(9):
-        col = []
-        for r in range(9):
-            col.append(CellTkinter(entryFrame,r,c))        
-        array.append(col)
+def clear(array):
+    for row in array:
+        for el in row:
+            el.clear()
+    array=[]
 
 
 
@@ -60,7 +58,7 @@ if __name__ == '__main__':
     entryFrame .grid(row = 1,column = 0, stick = W+N+E)
     button = Button(buttonFrame, text= "Solve",padx=0, pady=0, command = lambda:sendArray(array))
     button.grid(row = 0,column = 0, stick = W+N+E)
-    buttonClear = Button(buttonFrame, text= "Clear",padx=0, pady=0, command = lambda:clear())
+    buttonClear = Button(buttonFrame, text= "Clear",padx=0, pady=0, command = lambda:clear(array))
     buttonClear.grid(row = 0,column = 1, stick = W+N+E)
 
     for c in range(9):
