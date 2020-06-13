@@ -23,18 +23,19 @@ def sendArray(array):
     arrToSend = []
     rows = []
     
-    for c in range(len(array[0])):
+
+    for row in array:
         rows =[]
-        for r in range(len(array[0])):
-            rows.append(int(array[r][c].getValue()))
+        for el in row:
+            rows.append(el.getValue())
         arrToSend.append(rows)
 
     solved = []
     solved = solve(arrToSend)
      
-    for c in range(len(array[0])):
-        for r in range(len(array[0])):
-            array[c][r].setValue(solved[r][c])
+    for rowIndex, row in enumerate(array):
+        for elIndex, el in  enumerate(row):
+            el.setValue(solved[rowIndex][elIndex])
 
 def clear(array):
     for row in array:
@@ -61,13 +62,11 @@ if __name__ == '__main__':
     buttonClear = Button(buttonFrame, text= "Clear",padx=0, pady=0, command = lambda:clear(array))
     buttonClear.grid(row = 0,column = 1, stick = W+N+E)
 
-    for c in range(9):
+    for r in range(9):
         col = []
-        for r in range(9):
+        for c in range(9):
             col.append(CellTkinter(entryFrame,r,c))        
         array.append(col)
-
-
 
 
     root.mainloop()
