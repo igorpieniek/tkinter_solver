@@ -38,19 +38,7 @@ class Solver(object):
                 if not self._array[r][c]:
                     self._cells.append(Cell(r,c))
 
-
-
-
-    def _printOptions(self):
-        for i in self._cells:
-            print( 'P(' + str(i.getRow()) 
-                +', '+ str(i.getColumn())
-                + ') Opt:' + str(i.getOptions()) )
-
-    def _printArray(self):
-        print('Wynik :')
-        for row in range(len(self._array[0])):
-            print(self._array[row])  
+ 
             
     def __str__(self):
         out = ''
