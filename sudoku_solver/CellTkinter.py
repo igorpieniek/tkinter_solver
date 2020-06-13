@@ -21,3 +21,5 @@ class CellTkinter(object):
             self._value.delete(0,END)
             self._value.insert(0,str(val))
         
+    def clear(self):
+        self._value.delete(0,'end')
